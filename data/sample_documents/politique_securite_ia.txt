@@ -1,0 +1,19 @@
+CHARTE DE SECURITE ET GOUVERNANCE DE L'INTELLIGENCE ARTIFICIELLE
+Document de Référence Interne - Version 2.4 - Octobre 2024
+
+ARTICLE 1 : OBJECTIFS ET CHAMP D'APPLICATION
+La présente charte définit les règles obligatoires régissant l'utilisation des technologies d'Intelligence Artificielle Générative et des assistants documentaires au sein de l'organisation. Elle s'applique à l'ensemble des collaborateurs, sous-traitants et partenaires techniques.
+
+ARTICLE 2 : CLASSIFICATION ET CONFIDENTIALITE DES DONNEES
+1. Données Publiques (Niveau C1) : Peuvent être indexées et transmises sans restriction vers des modèles d'IA hébergés sur le Cloud public.
+2. Données Internes Sensibles (Niveau C2) : L'ingestion est autorisée uniquement sur des plateformes RAG locales ou sécurisées par chiffrement TLS 1.3 au repos et en transit.
+3. Données Hautement Confidentielles et Données Personnelles RGPD (Niveau C3) : L'utilisation de modèles externes en mode public est formellement prohibée. Tout traitement doit être réalisé sur une instance locale (ex: Ollama, modèle sur infrastructure dédiée sur site).
+
+ARTICLE 3 : RESPONSABILITE ET CONTROLE HUMAIN OBLIGATOIRE
+Aucune décision juridique, financière ou d'embauche ne peut être automatisée de manière unilatérale par une IA générative sans validation explicite par un responsable humain habilité (« Human-in-the-loop »). L'utilisateur demeure personnellement responsable de la vérification des sources citées.
+
+ARTICLE 4 : GESTION DES IDENTIFIANTS ET CLES D'API
+Les clés d'accès aux services LLM (OpenAI, Google Gemini, Anthropic) doivent obligatoirement être stockées dans des variables d'environnement chiffrées (.env ou gestionnaire de secrets). L'insertion de clés en dur dans le code source ou dans les dépôts Git publics est passible de sanctions disciplinaires immédiates.
+
+ARTICLE 5 : PERIODE DE RETENTION ET SUPPRESSION
+Les index vectoriels temporaires sont conservés pour une durée maximale de 90 jours après la fin d'un projet de recherche, sauf demande expresse de prolongation formulée auprès du Délégué à la Protection des Données (DPO).

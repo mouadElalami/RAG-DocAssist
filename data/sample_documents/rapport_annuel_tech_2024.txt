@@ -1,0 +1,16 @@
+RAPPORT D'ACTIVITE TECHNOLOGIQUE ET R&D - EXERCICE 2024
+
+1. Chiffres Clés de l'Exercice
+- Investissement R&D global : 14,2 millions d'euros (+23% par rapport à 2023).
+- Projets d'innovation IA déployés en production : 18 plateformes.
+- Taux de réduction du temps de recherche documentaire interne : -64% grâce à l'implémentation de la solution RAG-DocAssist.
+- Effectif de l'équipe Data & IA : 42 ingénieurs et chercheurs répartis entre Paris et Lyon.
+
+2. Déploiement des Architectures Vectorielles
+Au cours du deuxième trimestre 2024, le département Data a standardisé l'ensemble des pipelines sur des bases vectorielles FAISS pour les moteurs de recherche temps réel, associées à des modèles d'embeddings bilingues français-anglais. Cette migration a permis d'abaisser le temps de réponse moyen par requête sémantique à 18 millisecondes pour un volume de 250 000 segments indexés.
+
+3. Objectifs Stratégiques pour 2025
+- Intégration de modèles multimodaux (analyse conjointe de texte et de schémas techniques).
+- Extension de la couverture RAG aux bases de données SQL d'entreprise via Text-to-SQL assisté.
+- Diminution de l'empreinte carbone des inférences en privilégiant la quantification 4-bits sur GPU basse consommation.
+- Budget prévisionnel approuvé pour 2025 : 17,8 millions d'euros.

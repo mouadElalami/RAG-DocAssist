@@ -1,0 +1,137 @@
+[
+  {
+    "content": "MOUAD EL-ALAMI\nÉtudiant ingénieur — Intelligence Artificielle & Data Science (5 ᵉ  année)\nMarrakech • 06 57 70 26 19 • alamimouad03@gmail.com\nPROFIL PROFESSIONNEL\nÉtudiant ingénieur en 5 ᵉ  année IA & Data Science à lʼEMSI Marrakech (issu des classes préparatoires MPSI), passionné\npar la modélisation prédictive, le traitement automatique du langage naturel (NLP) et le déploiement dʼarchitectures data.\nFort de deux expériences réussies en entreprise (IA/NLP chez SRM Marrakech-Safi et ingénierie logicielle & données",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 0,
+      "chunk_id": "ab5d0f9f_c0",
+      "chunk_char_count": 519
+    }
+  },
+  {
+    "content": "Fort de deux expériences réussies en entreprise (IA/NLP chez SRM Marrakech-Safi et ingénierie logicielle & données\nchez Menara Holding), je recherche un stage de fin dʼétudes (PFE) de 6 mois pour concevoir et industrialiser des\nsolutions d'IA et Data à forte valeur ajoutée.\nCOMPÉTENCES TECHNIQUES\nIA & Machine Learning : Python (NumPy, Pandas, Scikit-learn, XGBoost), Deep Learning, NLP, LLMs, Systèmes RAG\nBig Data & Data Engineering : SQL, NoSQL (MongoDB), Notions PySpark, Pipelines ETL automatisés, Power BI",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 1,
+      "chunk_id": "ab5d0f9f_c1",
+      "chunk_char_count": 512
+    }
+  },
+  {
+    "content": "Big Data & Data Engineering : SQL, NoSQL (MongoDB), Notions PySpark, Pipelines ETL automatisés, Power BI\nDéveloppement & Cloud : FastAPI, Flask, C++, Cloud Computing (IBM), Spring Boot, Architecture API REST\nDevOps & Méthodologies : Docker, Git / GitHub, CI/CD, MLflow, Gestion Agile / Scrum (Google)\nEXPÉRIENCES PROFESSIONNELLES\nStagiaire IA / Data — SRM Marrakech-Safi Juil. 2026 – Août 2026 | Marrakech\nProjet : Plateforme Intelligente de Relation Client et de Traitement des Réclamations",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 2,
+      "chunk_id": "ab5d0f9f_c2",
+      "chunk_char_count": 491
+    }
+  },
+  {
+    "content": "Projet : Plateforme Intelligente de Relation Client et de Traitement des Réclamations\nDéveloppement de modules de NLP pour lʼautomatisation du traitement, de l'analyse sémantique et du routage des\nréclamations clients.\nConception et entraînement dʼun modèle de classification automatique multilingue (Français / Darija).\nImplémentation et intégration d'un chatbot conversationnel pour l'assistance client et l'automatisation des réponses.\nStagiaire Ingénieur Logiciel & Données — Menara Holding (Menara Prefa) Été 2025 | Marrakech",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 3,
+      "chunk_id": "ab5d0f9f_c3",
+      "chunk_char_count": 530
+    }
+  },
+  {
+    "content": "Stagiaire Ingénieur Logiciel & Données — Menara Holding (Menara Prefa) Été 2025 | Marrakech\nProjet : Système de Pilotage des Compétences et d'Aide à la Décision RH\nModélisation de la base de données relationnelle et développement dʼAPIs REST sécurisées pour la gestion des flux\nd'évaluation.\nConception de pipelines d'agrégation de données pour le reporting automatisé de l'évolution du personnel.\nDéploiement de l'application, intégration frontend/backend et animation de sessions de formation utilisateurs.\nPROJETS PERTINENTS",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 4,
+      "chunk_id": "ab5d0f9f_c4",
+      "chunk_char_count": 527
+    }
+  },
+  {
+    "content": "PROJETS PERTINENTS\nRAG-DocAssist — Système RAG & Recherche Sémantique Python, LangChain, FAISS, FastAPI\nArchitecture de Question-Réponse contextuelle sur corpus documentaire métier : chunking sémantique, recherche vectorielle\nvia embeddings et re-ranking pour éliminer les hallucinations.\nChurnGuard — Pipeline MLOps de Prédiction d'Attrition Scikit-learn, XGBoost, Docker, MLflow\nPipeline complet de modélisation prédictive avec gestion du déséquilibre (SMOTE), explicabilité des décisions (SHAP) et\ndéploiement d'une API d'inférence conteneurisée sous Docker (AUC : 0.91).",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 5,
+      "chunk_id": "ab5d0f9f_c5",
+      "chunk_char_count": 574
+    }
+  },
+  {
+    "content": "déploiement d'une API d'inférence conteneurisée sous Docker (AUC : 0.91).\nVisionGuard — Détection d'Objets en Temps Réel PyTorch, YOLOv8, OpenCV, Flask\nModèle de vision par ordinateur pour la détection et le suivi dʼobjets sur flux vidéo en direct, optimisé pour inférence temps\nréel avec déclenchement d'alertes instantanées.\nRH Pulse — Dashboard Décisionnel & Pipeline ETL Pandas, SQL, Power BI\nExtraction et transformation de données volumineuses (ETL automatisé) et création d'un tableau de bord interactif de KPIs\nRH (turnover, absentéisme, cartographie des compétences).\nFORMATION",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 6,
+      "chunk_id": "ab5d0f9f_c6",
+      "chunk_char_count": 586
+    }
+  },
+  {
+    "content": "RH (turnover, absentéisme, cartographie des compétences).\nFORMATION\nCycle ingénieur 5IIR-IADATA (IA & Data Science) — EMSI Marrakech 2024 – Présent\nClasses préparatoires MPSI (Mathématiques-Physique) — CPGE Ibn Tymiya, Marrakech 2021 – 2024\nBaccalauréat Scientifique — Sciences Mathématiques A — Groupe Scolaire Nakhil El Bouchra 2021\nCERTIFICATIONS & LANGUES\nCertifications : Machine Learning (Duke Univ.) • Introduction to Big Data (UC San Diego) • Cloud Computing & NoSQL\n(IBM) • Agile Project Management (Google) • POO en C++ (EPFL) • Python for Web Data (Univ. of Michigan)",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 7,
+      "chunk_id": "ab5d0f9f_c7",
+      "chunk_char_count": 578
+    }
+  },
+  {
+    "content": "(IBM) • Agile Project Management (Google) • POO en C++ (EPFL) • Python for Web Data (Univ. of Michigan)\nLangues : Arabe (Langue maternelle) • Français (Courant) • Anglais (Courant / Technique)",
+    "metadata": {
+      "doc_id": "ab5d0f9f",
+      "filename": "cv_ATS2.pdf",
+      "file_type": "pdf",
+      "file_size": 376122,
+      "indexed_at": "2026-11-11T11:32:33.122616",
+      "source": "cv_ATS2.pdf",
+      "page": 1,
+      "chunk_index": 8,
+      "chunk_id": "ab5d0f9f_c8",
+      "chunk_char_count": 192
+    }
+  }
+]

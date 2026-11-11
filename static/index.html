@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG-DocAssist — Plateforme Web IA Générative & Recherche Sémantique</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body class="h-full flex flex-col text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- Top Navigation Header -->
+  <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between flex-shrink-0 z-20 shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+        <i class="bi bi-cpu-fill text-xl"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg font-bold text-slate-900 tracking-tight">RAG-DocAssist</h1>
+          <span class="text-[11px] font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-mono">v1.0.0</span>
+        </div>
+        <p class="text-xs text-slate-500 hidden sm:block">Recherche sémantique vectorielle FAISS & Q&A IA Générative</p>
+      </div>
+    </div>
+
+    <!-- Live Metrics Badges & Action Buttons -->
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-3 text-xs font-medium text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-xl border border-slate-200">
+        <div class="flex items-center gap-1.5">
+          <i class="bi bi-file-earmark-text text-blue-600"></i>
+          <span>Documents:</span>
+          <span id="stat-docs-count" class="font-bold text-slate-900">0</span>
+        </div>
+        <span class="text-slate-300">|</span>
+        <div class="flex items-center gap-1.5">
+          <i class="bi bi-grid-3x3-gap-fill text-indigo-600"></i>
+          <span>Chunks FAISS:</span>
+          <span id="stat-chunks-count" class="font-bold text-slate-900">0</span>
+        </div>
+        <span class="text-slate-300">|</span>
+        <div class="flex items-center gap-1.5">
+          <i class="bi bi-magic text-purple-600"></i>
+          <span>LLM:</span>
+          <span id="stat-provider-badge" class="font-bold text-purple-700 bg-purple-100/60 px-1.5 py-0.5 rounded text-[11px]">GEMINI</span>
+        </div>
+      </div>
+
+      <button id="btn-load-samples" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-2xs transition-colors" title="Charger les documents d'exemple fournis">
+        <i class="bi bi-file-earmark-check"></i>
+        <span class="hidden sm:inline">Charger Exemples</span>
+      </button>
+
+      <a href="/docs" target="_blank" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 rounded-lg transition-colors" title="Documentation OpenAPI Swagger">
+        <i class="bi bi-code-slash"></i>
+        <span>API Docs</span>
+      </a>
+
+      <button id="btn-open-settings" class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors" title="Paramètres & Clés API">
+        <i class="bi bi-gear-fill text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Body Layout -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- Left Sidebar: Document Management & Vector Ingestion -->
+    <aside class="w-80 md:w-96 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 overflow-hidden">
+      <!-- Sidebar Header -->
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="bi bi-folder2-open text-blue-600 font-bold"></i>
+          <h2 class="text-sm font-bold text-slate-900">Corpus Documentaire</h2>
+        </div>
+        <button id="btn-reset-all" class="text-xs text-slate-400 hover:text-red-600 flex items-center gap-1 transition-colors" title="Vider l'index FAISS">
+          <i class="bi bi-trash"></i>
+          <span>Vider</span>
+        </button>
+      </div>
+
+      <!-- Drag & Drop Upload Box -->
+      <div class="p-4 border-b border-slate-100">
+        <div id="drop-zone" class="border-2 border-dashed border-slate-200 hover:border-blue-500 rounded-2xl p-4 text-center cursor-pointer transition-all duration-200 bg-slate-50/50 hover:bg-blue-50/30 group">
+          <input type="file" id="file-input" multiple accept=".pdf,.docx,.txt,.md,.markdown" class="hidden">
+          <div class="w-10 h-10 rounded-full bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-2 transition-colors">
+            <i class="bi bi-cloud-arrow-up-fill text-lg"></i>
+          </div>
+          <p class="text-xs font-semibold text-slate-800">Glissez-déposez vos fichiers</p>
+          <p class="text-[11px] text-slate-400 mt-1">PDF, DOCX, TXT, Markdown</p>
+          <button class="mt-2 text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md group-hover:bg-blue-600 group-hover:text-white transition-all">
+            Parcourir
+          </button>
+        </div>
+
+        <!-- Upload Progress -->
+        <div id="upload-progress" class="hidden mt-3">
+          <div class="flex justify-between text-xs text-slate-500 mb-1">
+            <span id="progress-status" class="truncate font-medium">Traitement en cours...</span>
+          </div>
+          <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+            <div id="progress-bar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Accordion: Quick Raw Text Note Indexer -->
+        <div class="mt-3">
+          <button id="btn-toggle-raw-text" class="w-full flex items-center justify-between text-xs font-medium text-slate-600 hover:text-slate-900 py-1">
+            <span class="flex items-center gap-1.5"><i class="bi bi-pencil-square"></i> Indexer une note de texte brut</span>
+            <i class="bi bi-chevron-down text-[10px]"></i>
+          </button>
+          <div id="raw-text-container" class="hidden mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <input type="text" id="raw-text-title" placeholder="Titre de la note ou mémo" class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-hidden focus:border-blue-500 bg-white">
+            <textarea id="raw-text-content" rows="3" placeholder="Contenu textuel à vectoriser..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-hidden focus:border-blue-500 bg-white"></textarea>
+            <button id="btn-submit-raw-text" class="w-full py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+              Découper et Indexer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indexed Document List -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-2">
+        <div id="doc-empty-state" class="text-center py-8 px-4">
+          <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400">
+            <i class="bi bi-inbox text-xl"></i>
+          </div>
+          <p class="text-xs font-semibold text-slate-600">Aucun document indexé</p>
+          <p class="text-[11px] text-slate-400 mt-1">Téléversez un fichier ou cliquez sur « Charger Exemples » ci-dessus.</p>
+        </div>
+
+        <div id="doc-list" class="space-y-2">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Vector Store Footer Information -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Index FAISS FlatL2</span>
+        </div>
+        <span class="font-mono text-slate-400">Dim: 384</span>
+      </div>
+    </aside>
+
+    <!-- Right Main Workspace -->
+    <main class="flex-1 flex flex-col bg-slate-100/50 overflow-hidden">
+      
+      <!-- Tab Header Switcher -->
+      <div class="bg-white border-b border-slate-200 px-6 py-2.5 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+          <button id="tab-btn-chat" class="tab-btn active flex items-center gap-2 px-4 py-2 font-medium text-sm rounded-lg bg-blue-600 text-white shadow-2xs transition-all">
+            <i class="bi bi-chat-quote-fill"></i>
+            <span>Assistant RAG & Q&A</span>
+          </button>
+          <button id="tab-btn-search" class="tab-btn flex items-center gap-2 px-4 py-2 font-medium text-sm rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all">
+            <i class="bi bi-search"></i>
+            <span>Explorateur Sémantique</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-500 font-medium">Top Chunks (k):</label>
+          <select id="chat-top-k" class="text-xs font-semibold bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 focus:outline-hidden">
+            <option value="2">2 segments</option>
+            <option value="4" selected>4 segments</option>
+            <option value="6">6 segments</option>
+            <option value="8">8 segments</option>
+          </select>
+          <button id="btn-clear-chat" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors" title="Effacer la conversation">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 1: RAG CHAT VIEW -->
+      <div id="view-chat" class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- Chat Messages Scroll Area -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-6">
+          
+          <!-- Welcome Message -->
+          <div class="flex gap-3 max-w-3xl mr-auto">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white flex-shrink-0 shadow-xs mt-1">
+              <i class="bi bi-robot text-sm"></i>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-sm p-4 shadow-xs text-sm text-slate-700 max-w-2xl leading-relaxed">
+              <p class="font-bold text-slate-900 mb-1">Bonjour ! Je suis votre assistant documentaire RAG-DocAssist.</p>
+              <p class="text-slate-600">Je réponds précisément à vos questions en m'appuyant de manière rigoureuse sur les documents que vous avez indexés dans la base vectorielle FAISS. Chaque affirmation est accompagnée de sa citation source.</p>
+              
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Exemples de requêtes rapides :</p>
+                <div class="flex flex-wrap gap-2">
+                  <button class="preset-chip text-xs bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors text-left" data-query="Résume les principes et composants clés de l'architecture RAG.">
+                    💡 Architecture et composants RAG
+                  </button>
+                  <button class="preset-chip text-xs bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors text-left" data-query="Quels sont les chiffres clés de l'exercice R&D 2024 et le budget prévu pour 2025 ?">
+                    📊 Chiffres clés R&D 2024
+                  </button>
+                  <button class="preset-chip text-xs bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors text-left" data-query="Quelles sont les règles de sécurité pour les données hautement confidentielles (C3) ?">
+                    🔒 Règles de sécurité données C3
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div class="p-4 bg-white border-t border-slate-200">
+          <div class="max-w-4xl mx-auto flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-2xl p-2 focus-within:border-blue-500 focus-within:bg-white focus-within:shadow-md transition-all">
+            <textarea id="chat-input" rows="1" placeholder="Posez une question sur vos documents indexés..." class="flex-1 bg-transparent border-0 focus:outline-hidden text-sm text-slate-800 placeholder-slate-400 resize-none max-h-32 px-3 py-2"></textarea>
+            <button id="btn-send-chat" class="w-10 h-10 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-all shadow-sm flex-shrink-0 disabled:opacity-40 disabled:cursor-not-allowed">
+              <i class="bi bi-arrow-up-short text-2xl font-bold"></i>
+            </button>
+          </div>
+          <p class="text-center text-[11px] text-slate-400 mt-2">
+            RAG-DocAssist synthétise les réponses à partir des segments vectorisés avec vérification des citations.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: SEMANTIC SEARCH EXPLORER -->
+      <div id="view-search" class="hidden flex-1 flex flex-col overflow-hidden p-6">
+        <div class="max-w-4xl mx-auto w-full flex flex-col h-full">
+          <!-- Search Bar Controls -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs mb-4">
+            <div class="flex items-center gap-3">
+              <div class="relative flex-1">
+                <i class="bi bi-search absolute left-3 top-3 text-slate-400"></i>
+                <input type="text" id="search-input" placeholder="Recherche sémantique pure par similarité d'embeddings (ex: confidentialité des données)..." class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all">
+              </div>
+              <select id="search-top-k" class="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-3 py-3 text-slate-700 focus:outline-hidden">
+                <option value="3">Top 3 Chunks</option>
+                <option value="5" selected>Top 5 Chunks</option>
+                <option value="10">Top 10 Chunks</option>
+              </select>
+              <button id="btn-run-search" class="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-colors">
+                <i class="bi bi-search"></i>
+                <span>Rechercher</span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
+              <span>Moteur : FAISS L2 Distance sur espace vectoriel 384-D</span>
+              <span id="search-timing-badge" class="hidden font-mono font-semibold text-blue-600">0 résultats</span>
+            </div>
+          </div>
+
+          <!-- Search Results List -->
+          <div class="flex-1 overflow-y-auto space-y-3 pr-1">
+            <div id="search-empty-state" class="text-center py-16">
+              <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400">
+                <i class="bi bi-compass text-xl"></i>
+              </div>
+              <p class="text-sm font-semibold text-slate-600">Recherche Vectorielle Directe</p>
+              <p class="text-xs text-slate-400 max-w-md mx-auto mt-1">Entrez une requête conceptuelle pour observer le classement des segments de texte extraits par similarité géométrique dans l'index FAISS.</p>
+            </div>
+            <div id="search-results-container" class="space-y-3">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Settings & API Keys Modal -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full p-6 animate-scale-up">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <i class="bi bi-sliders text-blue-600"></i>
+          <h3 class="text-base font-bold text-slate-900">Paramètres RAG & LLM</h3>
+        </div>
+        <button id="btn-close-settings" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Fournisseur de Modèle LLM</label>
+          <select id="settings-provider" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-hidden focus:border-blue-500">
+            <option value="gemini">Google Gemini (gemini-1.5-flash / gemini-pro)</option>
+            <option value="openai">OpenAI (gpt-4o-mini / gpt-3.5-turbo)</option>
+            <option value="ollama">Ollama (Serveur Local)</option>
+            <option value="mock">Mode Hors-ligne / Synthèse Directe</option>
+          </select>
+          <p class="text-[11px] text-slate-400 mt-1">Le mode hors-ligne fonctionne à 100% sans aucune clé externe.</p>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Clé API (Gemini ou OpenAI)</label>
+          <input type="password" id="settings-api-key" placeholder="AIzaSy... ou sk-..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-hidden focus:border-blue-500">
+          <p class="text-[11px] text-slate-400 mt-1">Stockée de façon sécurisée pour la session de navigation.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Chunk Size</label>
+            <input type="number" id="settings-chunk-size" value="600" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Chunk Overlap</label>
+            <input type="number" id="settings-chunk-overlap" value="120" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:border-blue-500">
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <button id="btn-save-settings" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition-colors shadow-xs">
+          Enregistrer les modifications
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="hidden fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl transition-all duration-300 transform translate-y-10 opacity-0 text-sm font-medium bg-slate-900 text-white">
+    <i class="bi bi-info-circle-fill text-blue-400"></i>
+    <span id="toast-message">Message</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
